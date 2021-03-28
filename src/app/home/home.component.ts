@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Contact } from '../models/Contact'
+import { ApiService } from '../services/api.service';
 
 @Component({
   selector: 'app-home',
@@ -9,31 +10,36 @@ import { Contact } from '../models/Contact'
 })
 export class HomeComponent implements OnInit {
 
-  contacts: Contact[] = []
+  contacts: any = []
   searchTerm: string = ''
 
-  constructor() { }
+  constructor(private apiService: ApiService) { }
 
   ngOnInit(): void {
-    this.contacts = JSON.parse(localStorage.getItem('contacts') || '[]')
+    this.apiService.getContacts()
+      .subscribe((data: any) => {
+        this.contacts = data
+      })
   }
 
   onChange() {
+    console.log(this.contacts)
     if (this.searchTerm == '') {
-      this.contacts = JSON.parse(localStorage.getItem('contacts') || '[]')
+      this.apiService.getContacts()
+        .subscribe((data: any) => {
+          this.contacts = data
+        })
     }
     else {
-      var nw = this.contacts.filter((contact, index) =>
-        contact.name.includes(this.searchTerm)
+      var nw = this.contacts.filter((contact: any) =>
+        contact.firstname.includes(this.searchTerm) || contact.lastname.includes(this.searchTerm)
       )
       this.contacts = nw
     }
   }
 
-  delete(i: any) {
-    var nw = this.contacts.filter((contact, index) => index != i)
-    localStorage.setItem('contacts', JSON.stringify(nw))
-    window.location.reload()
+  delete(i:number){
+    console.log('deleteing' + i)
   }
 
 }

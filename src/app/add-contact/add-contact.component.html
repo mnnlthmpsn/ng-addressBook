@@ -2,18 +2,62 @@
     <div class="col-12 col-md-8">
         <form method="POST" (submit)="addContact()">
             <div class="form-group">
-                <label for="email">Email</label>
-                <input type="email" [(ngModel)]="contact.email" name="email" class="form-control" required>
+                <label for="firstname">Firstname</label>
+                <input type="firstname" [(ngModel)]="contact.firstname" name="firstname" class="form-control"
+                    required />
             </div>
             <div class="form-group">
-                <label for="email">Name</label>
-                <input type="text" [(ngModel)]="contact.name" name="name" class="form-control" required>
+                <label for="lastname">Surname</label>
+                <input type="text" [(ngModel)]="contact.lastname" name="lastname" class="form-control" required />
             </div>
             <div class="form-group">
-                <label for="email">Phone</label>
-                <input type="tel" [(ngModel)]="contact.phone" name="phone" class="form-control" required>
+                <label for="phone">Phone</label>
+                <input type="tel" [(ngModel)]="contact.phone" name="phone" class="form-control" required />
             </div>
-            <button class="btn shadow-lg" [ngStyle]="{'background-color': '#4B8080', 'color': 'white'}" type="submit">Add Contact</button>
+            <div class="form-group">
+                <label for="regions">Regions</label>
+                <ng-container *ngIf="regions.length > 0; else elseTemplate">
+                    <select name="regions" id="regions" required [(ngModel)]="contact.location.region" class="form-control" (change)="regionChange()">
+                        <option value="">Select Region</option>
+                        <option [value]="region.id" *ngFor="let region of regions">{{region.reg_desc}}</option>
+                    </select>
+                </ng-container>
+                <ng-template #elseTemplate>
+                    <select class="form-control" disabled></select>
+                </ng-template>
+                
+            </div>
+            <div class="form-group">
+                <label for="city/towns">City/Towns</label>
+                <ng-container *ngIf="cities.length > 0; else elseTemplate">
+                    <select name="cities" id="city" required [(ngModel)]="contact.location.city" class="form-control" (change)="cityChange()">
+                        <option value="">Select City/Town</option>
+                        <option [value]="city.id" *ngFor="let city of cities">
+                            {{ city.city_desc }}
+                        </option>
+                    </select>
+                </ng-container>
+                <ng-template #elseTemplate>
+                    <select class="form-control" disabled></select>
+                </ng-template>
+                
+            </div>
+            <div class="form-group">
+                <label for="suburb">Suburb</label>
+                <ng-container *ngIf="suburbs.length > 0; else elseTemplate">
+                    <select name="suburb" id="regions" required [(ngModel)]="contact.location.suburb" class="form-control">
+                        <option value="">Select Suburb</option>
+                        <option [value]="suburb.id" *ngFor="let suburb of suburbs">{{suburb.sub_desc}}</option>
+                    </select>
+                </ng-container>
+                <ng-template #elseTemplate>
+                    <select class="form-control" disabled></select>
+                </ng-template>
+                
+            </div>
+            <button class="btn shadow-lg" [ngStyle]="{ 'background-color': '#4B8080', color: 'white' }" type="submit">
+                Add Contact
+            </button>
         </form>
     </div>
 </div>

@@ -1,18 +1,35 @@
-<p class="lead py-3 text-center">Contact Details for: {{ contact.name }}</p>
 <div class="row justify-content-center">
     <div class="col-12 col-md-8">
         <form method="POST" (submit)="updateContact()">
             <div class="form-group">
-                <label for="email">Email</label>
-                <input type="email" [(ngModel)]="contact.email" name="email" class="form-control" required>
+                <label for="firstname">Firstname</label>
+                <input type="text" [(ngModel)]="contact.firstname" name="firstname" class="form-control" required>
             </div>
             <div class="form-group">
-                <label for="email">Name</label>
-                <input type="text" [(ngModel)]="contact.name" name="name" class="form-control" required>
+                <label for="email">lastname</label>
+                <input type="text" [(ngModel)]="contact.lastname" name="lastname" class="form-control" required>
             </div>
             <div class="form-group">
                 <label for="email">Phone</label>
                 <input type="tel" [(ngModel)]="contact.phone" name="phone" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="regions">Regions</label>
+                <select name="regions" id="regions" required [(ngModel)]="contact.location.region" class="form-control" (change)="regionChange()">
+                    <option [value]="region.id" *ngFor="let region of regions">{{ region.reg_desc }}</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="city/towns">City/Towns</label>
+                <select name="cities" id="cities" required [(ngModel)]="contact.location.city" class="form-control" (change)="cityChange()">
+                    <option [value]="city.id" *ngFor="let city of cities">{{ city.city_desc }}</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="suburb">Suburb</label>
+                <select name="suburb" id="suburbs" required [(ngModel)]="contact.location.suburb" class="form-control">
+                    <option [value]="suburb.id" *ngFor="let suburb of suburbs">{{ suburb.sub_desc }}</option>
+                </select>
             </div>
             <button class="btn shadow-lg" [ngStyle]="{'background-color': '#4B8080', 'color': 'white'}" type="submit">Update Contact</button>
         </form>

@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Contact } from '../models/Contact';
+import { Location } from '../models/location';
+import { ApiService } from '../services/api.service';
 
 @Component({
   selector: 'app-add-contact',
@@ -9,22 +11,45 @@ import { Contact } from '../models/Contact';
 })
 export class AddContactComponent implements OnInit {
 
-  contact: Contact = {
-    email: '', name: '', phone: ''
-  }
+  location: Location = new Location('', '', '')
+  contact: Contact = new Contact('', '', '', this.location)
   contacts: Contact[] = []
 
-  constructor(private router: Router) { }
+  regions: any = []
+  cities: any = []
+  suburbs: any = []
+
+  constructor(private router: Router, private apiService: ApiService) { }
 
   ngOnInit(): void {
-    this.contacts = JSON.parse(localStorage.getItem('contacts') || '[]') 
+    this.apiService.getRegions()
+      .subscribe((data: any) => {
+        this.regions = data
+      })
   }
+
 
   // add contact
   addContact() {
-    this.contacts.push(new Contact(this.contact.email, this.contact.name, this.contact.phone))
-    localStorage.setItem('contacts',  JSON.stringify(this.contacts))
+    this.apiService.addContact(this.contact)
+      .subscribe((data: any) => {
+        console.log(data)
+      })
     this.router.navigateByUrl('/')
+  }
+
+  regionChange(){
+    this.apiService.getCities(this.contact.location.region)
+      .subscribe((data: any) => {
+        this.cities = data
+      })
+  }
+
+  cityChange(){
+    this.apiService.getSuburbs(this.contact.location.city)
+      .subscribe((data: any) => {
+        this.suburbs = data
+      })
   }
 
 }
