@@ -10,6 +10,7 @@ import { ApiService } from '../services/api.service';
 })
 export class ContactDetailComponent implements OnInit {
 
+  id: any
   regions: any = []
   cities: any = []
   suburbs: any = []
@@ -19,8 +20,8 @@ export class ContactDetailComponent implements OnInit {
   constructor(private currentRoute: ActivatedRoute, private router: Router, private apiService: ApiService) { }
 
   ngOnInit(): void {
-    var id = this.currentRoute.snapshot.paramMap.get('id') || ''
-    this.getContact(id)
+    this.id = this.currentRoute.snapshot.paramMap.get('id') || ''
+    this.getContact(this.id)
     this.getRegions()
   }
 
@@ -65,9 +66,9 @@ export class ContactDetailComponent implements OnInit {
   }
 
   updateContact() {
-    // this.contacts[parseInt(this.index)] = new Contact(this.contact.firstname, this.contact.lastname, this.contact.phone, this.contact.location)
-    // localStorage.setItem('contacts',  JSON.stringify(this.contacts))
-    // this.router.navigateByUrl('/')
+    this.apiService.updateContact(this.contact, this.id)
+      .subscribe((data: any) => console.log('Success'))
+    this.router.navigateByUrl('/')
   }
 
 }

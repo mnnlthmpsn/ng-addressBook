@@ -42,4 +42,19 @@ export class ApiService {
     })
   }
 
+  updateContact = (contact: Contact, id:any) => {
+    return this.http.put(`${this.url}/contact/update/${id}`, {
+      firstname: contact.firstname,
+      lastname: contact.lastname,
+      phone: contact.phone,
+      regionId: contact.location.region,
+      cityId: contact.location.city,
+      suburbId: contact.location.suburb
+    })
+  }
+
+  deleteContact = (id: any) => {
+    return this.http.delete(`${this.url}/contact/delete/${id}`)
+  }
+
 }
